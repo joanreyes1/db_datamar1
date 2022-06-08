@@ -1,0 +1,60 @@
+drop table if exists DIM_VACUNACION;
+
+/*==============================================================*/
+/* Table: DIM_VACUNACION*/
+/*==============================================================*/
+create table DIM_VACUNACION
+(
+   IDVACUNA            		char(10) not null,
+   NOM_VACUNA           	varchar(40) not null,
+   DOSIS_VACUNA                        varchar(40) not null,
+   PRECIO_VACUNA           	numeric(5,2) not null,
+   primary key (IDVACUNA)
+);
+
+drop table if exists DIM_MASCOTA;
+
+/*==============================================================*/
+/* Table: DIM_MASCOTA*/
+/*==============================================================*/
+create table DIM_MASCOTA
+(
+   IDMASCOTA            	char(20) not null,
+   RAZA_MASCOTA           	varchar(40) not null,
+   primary key (IDMASCOTA)
+);
+
+drop table if exists DIM_TIEMPO;
+
+/*==============================================================*/
+/* Table: DIM_TIEMPO                                            */
+/*==============================================================*/
+create table DIM_TIEMPO
+(
+   IDTIEMPO            			char(50) not null,
+   FECHA_VACUNACION         		date not null,
+   primary key (IDTIEMPO)
+);
+
+drop table if exists HECHO;
+
+/*==============================================================*/
+/* Table: HECHO */
+/*==============================================================*/
+create table HECHO
+(
+   IDVACUNA               char(10) not null,
+   IDMASCOTA              char(10) not null,
+   IDTIEMPO               char(10) not null,
+   HECHO              	  varchar(20),
+   primary key (IDVACUNA, IDMASCOTA, IDTIEMPO)
+);
+
+alter table HECHO add constraint FK_DIMVACUNACION_HECHO foreign key (IDVACUNA)
+      references DIM_VACUNACION (IDVACUNA) on delete restrict on update restrict;
+
+alter table HECHO add constraint FK_DIMMASCOTA_HECHO foreign key (IDMASCOTA)
+      references DIM_MASCOTA (IDMASCOTA) on delete restrict on update restrict;
+
+alter table HECHO add constraint FK_DIMTIEMPOHECHO foreign key (IDTIEMPO)
+      references DIM_TIEMPO (IDTIEMPO) on delete restrict on update restrict;
