@@ -1,0 +1,314 @@
+/*==============================================================*/
+/* Table: CLIENTE                                               */
+/*==============================================================*/
+create table CLIENTE (
+   ID_CLIENTE           CHAR(10)             not null,
+   ID_VETERINARIA       CHAR(10)             null,
+   CED_CLIENTE          CHAR(10)             null,
+   NOM_CLIENTE          CHAR(50)             null,
+   APELL_CLIENTE        CHAR(50)             null,
+   DIRC_CLIENTE         CHAR(50)             null,
+   TELF_CLIENTE         CHAR(15)             null,
+   EMAIL_CLIENTE        CHAR(60)             null,
+   GENERO_CLIENTE       CHAR(1)              null,
+   F_REGISTRO_CLIENTE   DATE                 null,
+   F_ULTIMA_VISITA_CLIENTE DATE                 null,
+   constraint PK_CLIENTE primary key (ID_CLIENTE)
+);
+
+/*==============================================================*/
+/* Table: DOC_VETERINARIO                                       */
+/*==============================================================*/
+create table DOC_VETERINARIO (
+   ID_DOCTOR            CHAR(10)             not null,
+   ID_VETERINARIA       CHAR(10)             null,
+   NOM_DOCTOR           CHAR(50)             null,
+   APELL_DOCTOR         CHAR(50)             null,
+   F_NACIMIENTO_DOCTOR  DATE                 null,
+   DIRC_DOCTOR          CHAR(60)             null,
+   TELF_DOCTOR          CHAR(15)             null,
+   EMAIL_DOCTOR         CHAR(60)             null,
+   constraint PK_DOC_VETERINARIO primary key (ID_DOCTOR)
+);
+
+/*==============================================================*/
+/* Table: MASCOTA                                               */
+/*==============================================================*/
+create table MASCOTA (
+   ID_MASCOTA           CHAR(10)             not null,
+   ID_CLIENTE           CHAR(10)             null,
+   NOM_MASCOTA          CHAR(50)             null,
+   RAZA_MASCOTA         CHAR(20)             null,
+   F_NACIMIENTO_MASCOTA DATE                 null,
+   GENERO_MASCOTA       CHAR(1)              null,
+   COLOR_MASCOTA        CHAR(20)             null,
+   ESTERILIZADO_MASCOTA BOOL                null,
+   constraint PK_MASCOTA primary key (ID_MASCOTA)
+);
+
+
+/*==============================================================*/
+/* Table: PRODUCTO                                              */
+/*==============================================================*/
+create table PRODUCTO (
+   ID_PRODUCTO          CHAR(10)             not null,
+   ID_PROVEEDOR         CHAR(10)             null,
+   COD__PRODUCTO        CHAR(10)             null,
+   NOM_PRODUCTO         CHAR(50)             null,
+   PRECIO_PRODUCTO      NUMERIC(5,2)         null,
+   constraint PK_PRODUCTO primary key (ID_PRODUCTO)
+);
+
+
+/*==============================================================*/
+/* Table: PROVEEDOR                                             */
+/*==============================================================*/
+create table PROVEEDOR (
+   ID_PROVEEDOR         CHAR(10)             not null,
+   ID_VETERINARIA       CHAR(10)             null,
+   NOM_PROVEEDOR        CHAR(50)             null,
+   TELF_PROVEEDOR       CHAR(15)             null,
+   EMAL_PROVEEDOR       CHAR(60)             null,
+   constraint PK_PROVEEDOR primary key (ID_PROVEEDOR)
+);
+
+/*==============================================================*/
+/* Table: VACUNA_MASCOTA                                        */
+/*==============================================================*/
+create table VACUNA_MASCOTA (
+   ID_VACUNA            CHAR(10)             not null,
+   ID_MASCOTA            CHAR(10)             null,
+   NOM_VACUNA           CHAR(50)             null,
+   DOSIS_VACUNA         CHAR(15)             null,
+   PRECIO_VACUNA        NUMERIC(5,2)         null,
+   F_VECUNA             DATE                 null,
+   constraint PK_VACUNA_MASCOTA primary key (ID_VACUNA)
+);
+
+/*==============================================================*/
+/* Table: VETERINARIA                                           */
+/*==============================================================*/
+create table VETERINARIA (
+   ID_VETERINARIA       CHAR(10)             not null,
+   NOM_VETERINARIA      CHAR(50)             null,
+   DIRC_VETERINARIA     CHAR(50)             null,
+   EMAIL_VETERINARIA    CHAR(50)             null,
+   TELF_VETERINARIA     CHAR(15)             null,
+   constraint PK_VETERINARIA primary key (ID_VETERINARIA)
+);
+
+/*==============================================================*/
+/* Table: VISITA                                                */
+/*==============================================================*/
+create table VISITA (
+   ID_VISITA            CHAR(10)             not null,
+   ID_DOCTOR            CHAR(10)             null,
+   ID_MASCOTA           CHAR(10)             null,
+   ASUNTO_VISITA        CHAR(60)             null,
+   FECHA_VISITA          DATE                 null,
+   OBSERVACION_VISITA   CHAR(150)            null,
+   constraint PK_VISITA primary key (ID_VISITA)
+);
+
+
+
+alter table CLIENTE
+   add constraint FK_CLIENTE_RELATIONS_VETERINA foreign key (ID_VETERINARIA)
+      references VETERINARIA (ID_VETERINARIA)
+      on delete restrict on update restrict;
+
+alter table DOC_VETERINARIO
+   add constraint FK_DOC_VETE_RELATIONS_VETERINA foreign key (ID_VETERINARIA)
+      references VETERINARIA (ID_VETERINARIA)
+      on delete restrict on update restrict;
+
+alter table MASCOTA
+   add constraint FK_MASCOTA_RELATIONS_CLIENTE foreign key (ID_CLIENTE)
+      references CLIENTE (ID_CLIENTE)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_RELATIONS_PROVEEDO foreign key (ID_PROVEEDOR)
+      references PROVEEDOR (ID_PROVEEDOR)
+      on delete restrict on update restrict;
+
+alter table PROVEEDOR
+   add constraint FK_PROVEEDO_RELATIONS_VETERINA foreign key (ID_VETERINARIA)
+      references VETERINARIA (ID_VETERINARIA)
+      on delete restrict on update restrict;
+
+alter table VACUNA_MASCOTA
+   add constraint FK_VACUNA_M_RELATIONS_VISITA foreign key (ID_VISITA)
+      references VISITA (ID_VISITA)
+      on delete restrict on update restrict;
+
+alter table VISITA
+   add constraint FK_VISITA_RELATIONS_DOC_VETE foreign key (ID_DOCTOR)
+      references DOC_VETERINARIO (ID_DOCTOR)
+      on delete restrict on update restrict;
+
+alter table VISITA
+   add constraint FK_VISITA_RELATIONS_MASCOTA foreign key (ID_MASCOTA)
+      references MASCOTA (ID_MASCOTA)
+      on delete restrict on update restrict;
+
+
+
+
+
+/*							INSERT							*/
+-- VETERINARIA 
+--	select * from veterinaria
+insert into veterinaria values('veterin001','Amaia Moreira','Manta','amaiamoreira@hotmail.com','+593 998858547');
+
+
+-- DOCTOR DEL LA VETERINARIA 
+--	select * from doc_veterinario
+insert into doc_veterinario values('doc-v00001','veterin001','Juan','Macias','1995-5-1',
+							   'Manta','+593 9985656458', 'juanmacias@hotmail.com');
+insert into doc_veterinario values('doc-v00002','veterin001','Carlos','Sanches','1994/12/1',
+							   'Manta','+593 9985656458', 'carlossanchez@hotmail.com');							   
+
+-- CLIENTE 
+--	select * from cliente
+insert into cliente values('cliente001','veterin001','1999555545', 'Mauricio', 'Velez', 'Manta',
+						   '+593 9985656458', 'mauriciovelz@hotmail.com', 'M', '2018-1-25', '2020-12-23');
+insert into cliente values('cliente002','veterin001','1999555545', 'Samuel', 'Castro', 'Manta',
+						   '+593 9985656458', 'samuelcastro@hotmail.com', 'M', '2018-1-25', '2020-12-23');
+insert into cliente values('cliente003','veterin001','1999555545', 'Pedro', 'Reyes', 'Manta',
+						   '+593 9985656458', 'pedroreyes@hotmail.com', 'M', '2018-1-25', '2020-12-23');
+insert into cliente values('cliente004','veterin001','1999555545', 'Lucia', 'Velez', 'Manta',
+						   '+593 9985656458', 'luciavelez@hotmail.com', 'F', '2018-1-25', '2020-12-23');
+insert into cliente values('cliente005','veterin001','1999555545', 'Margarita', 'Quiroz', 'Manta',
+						   '+593 9985656458', 'margaritaquiroz@hotmail.com', 'F', '2018-1-25', '2020-12-23');
+insert into cliente values('cliente006','veterin001','1999555545', 'Tania', 'Lopez', 'Manta',
+						   '+593 9985656458', 'tanialopez@hotmail.com', 'F', '2018-1-23', '2020-12-23');
+						   
+
+-- MASCOTA 
+--	select * from mascota
+insert into mascota values('mascota001','cliente001','Ruger','Pug', '2019-5-1', 'M', 'Cafe','1');
+insert into mascota values('mascota002','cliente001','Max','Pastor Aleman', '2018-5-5', 'M', 'Gris','1');					   
+
+insert into mascota values('mascota003','cliente002','Chiripa','Husky', '2019-5-5', 'M', 'Blanco','0');
+
+insert into mascota values('mascota004','cliente003','Jack','Chihuagua', '2018-5-5', 'M', 'Gris','1');	
+ 
+insert into mascota values('mascota005','cliente004','Toby','Golden', '2019-5-5', 'M', 'Cafe','1');
+insert into mascota values('mascota006','cliente004','Roky','Goldendoodle', '2018-5-5', 'M', 'Gris','0');
+insert into mascota values('mascota007','cliente004','Coco','Pugle', '2019-5-5', 'M', 'Cafe','1');
+
+insert into mascota values('mascota008','cliente005','Hulk','American Bully', '2018-5-5', 'M', 'Gris','1');	
+
+insert into mascota values('mascota009','cliente006','Thor','Golden', '2019-5-5', 'M', 'Cafe','1');
+
+
+
+-- VISITA 
+--	select * from visita
+insert into visita values('visita0001', 'doc-v00001', 'mascota001','Chequeo de control','2020-2-1','Falta de hidratacion');
+insert into visita values('visita0002', 'doc-v00001', 'mascota001','Chequeo de control','2020-4-3','Falta de vitaminas');
+insert into visita values('visita0003', 'doc-v00001', 'mascota001','Chequeo de control','2020-6-2','Ninguna');
+insert into visita values('visita0004', 'doc-v00002', 'mascota002','Chequeo de control','2020-3-15','Desparasitante');
+
+insert into visita values('visita0005', 'doc-v00001', 'mascota003','Chequeo de control','2020-6-1','Ninguna');
+insert into visita values('visita0006', 'doc-v00001', 'mascota003','Chequeo de control','2020-3-15','Desparasitante');
+
+insert into visita values('visita0007', 'doc-v00001', 'mascota004','Chequeo de control','2020-8-25','Ninguna');
+insert into visita values('visita0008', 'doc-v00001', 'mascota004','Chequeo de control','2020-9-11','Desparasitante');
+insert into visita values('visita0009', 'doc-v00001', 'mascota004','Chequeo de control','2020-11-19','Ninguna');
+
+insert into visita values('visita0010', 'doc-v00002', 'mascota005','Chequeo de control','2020-6-1','Ninguna');
+insert into visita values('visita0011', 'doc-v00002', 'mascota005','Chequeo de control','2020-3-5','Desparasitante');
+insert into visita values('visita0012', 'doc-v00002', 'mascota005','Chequeo de control','2020-8-25','Ninguna');
+insert into visita values('visita0013', 'doc-v00002', 'mascota006','Chequeo de control','2020-9-11','Desparasitante');
+insert into visita values('visita0014', 'doc-v00002', 'mascota007','Chequeo de control','2020-11-19','Ninguna');
+
+insert into visita values('visita0015', 'doc-v00002', 'mascota008','Chequeo de control','2020-11-19','Ninguna');
+
+insert into visita values('visita0016', 'doc-v00002', 'mascota009','Chequeo de control','2020-11-19','Ninguna');
+insert into visita values('visita0017', 'doc-v00002', 'mascota009','Chequeo de control','2020-11-19','Ninguna');
+
+
+
+-- VACUNA DE MASCOTA 
+--	select * from vacuna_mascota
+insert into vacuna_mascota values('vacuna0001','mascota001', 'Moquillo canino', 'Primera dosis','5.50', '2021-2-1');
+insert into vacuna_mascota values('vacuna0002','mascota002', 'Moquillo canino', 'Segunda dosis','5.50', '2021-2-1');
+
+insert into vacuna_mascota values('vacuna0003','mascota003', 'Hepatitis', 'Primera dosis','5.50', '2021-2-1');
+
+insert into vacuna_mascota values('vacuna0004','mascota004', 'Rabia', 'Primera dosis','5.50', '2021-5-25');
+
+insert into vacuna_mascota values('vacuna0005','mascota005', 'Rabia', 'Primera dosis','5.50', '2021-5-25');
+insert into vacuna_mascota values('vacuna0006','mascota006', 'Hepatitis', 'Primera dosis','5.50', '2021-5-25');
+
+insert into vacuna_mascota values('vacuna0007','mascota007', 'Rabia', 'Primera dosis','5.50', '2021-5-25');
+
+insert into vacuna_mascota values('vacuna0008','mascota008', 'Hepatitis', 'Primera dosis','5.50', '2021-5-25');
+insert into vacuna_mascota values('vacuna0009','mascota009', 'Moquillo canino', 'Primera dosis','5.50', '2021-5-25');
+
+
+
+-- PROVEEDOR
+--	select * from proveedor
+insert into proveedor values('proveedor1','veterin001', 'Raul Beltrán', '+593 955558545','raulbeltran@hotmail.com');
+insert into proveedor values('proveedor2','veterin001', 'Joel Mendez', '+593 9986654125','joelmendez@hotmail.com');
+
+
+
+-- PRODUCTO
+--	select * from producto
+insert into producto values('product001','proveedor1', 'ok55445d', 'Desparasitantes','5.50');
+insert into producto values('product002','proveedor1', 'ok55445a', 'Talco para perros','5.50');
+insert into producto values('product003','proveedor2', 'ok55445f', 'Desparasitantes','6.50');
+
+
+
+
+/*						CONSULTAS						*/
+
+---	Cantidad de veces que cada cliente ha visitado el centro.
+SELECT  
+  cliente.nom_cliente,  
+  cliente.apell_cliente,
+  count(visita.id_visita) as cantidad_visitas
+FROM public.cliente
+	INNER JOIN public.mascota on cliente.id_cliente = mascota.id_cliente
+    INNER JOIN public.visita on mascota.id_mascota = visita.id_mascota
+GROUP BY nom_cliente, apell_cliente
+
+
+
+---	Cantidad de vacunas que una mascota ha tenido.
+SELECT 
+  mascota.id_mascota,
+  mascota.nom_mascota, 
+  count(vacuna_mascota.nom_vacuna) as cantida_vacunas
+FROM public.mascota
+  INNER JOIN public.visita on mascota.id_mascota = visita.id_mascota
+  INNER JOIN public.vacuna_mascota on visita.id_visita = vacuna_mascota.id_visita
+  --where mascota.id_mascota = 'mascota001'
+GROUP BY mascota.id_mascota, nom_mascota
+
+
+
+---	Cantidad de vacunas que cada veterinario ha puesto.
+SELECT 
+  doc_veterinario.id_doctor,
+  doc_veterinario.nom_doctor,
+  doc_veterinario.apell_doctor,
+  count(visita.id_visita) as cantidad_vacunas
+FROM public.mascota 
+  INNER JOIN public.visita ON mascota.id_mascota = visita.id_mascota
+  INNER JOIN public.vacuna_mascota ON visita.id_visita = vacuna_mascota.id_visita
+  INNER JOIN public.doc_veterinario ON visita.id_doctor = doc_veterinario.id_doctor
+GROUP BY doc_veterinario.id_doctor, nom_doctor
+
+
+
+
+
+
+//Power BI Datamart1
+https://drive.google.com/file/d/1AHE_3i9xInxfa8_Ak_R23btl0XGdQ7OV/view?usp=sharing
